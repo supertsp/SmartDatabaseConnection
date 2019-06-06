@@ -1,0 +1,7 @@
+/target/archive-tmparchive-tmp/
+/target/classes/
+/target/generated-sources/
+/target/maven-archiver/
+/target/maven-status/
+/target/surefire-reports/
+/target/test-classes/
