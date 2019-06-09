@@ -1,6 +1,8 @@
 package smartdb;
 
 import java.util.List;
+import smartdb.SmartDbConnection;
+import smartdb.SmartDbConnection;
 
 /**
  *
@@ -30,22 +32,28 @@ public class Testes {
         
         System.out.println("\n\n\n---------------------------------------------------------------------------------------------------");
         System.out.println(">>> QUERY WITH WILDCARDS");
-        SmartDbConnection.setCurrentDbType(SmartDbConnection.DbType.SQLServer);
-        SmartDbConnection.executeQuery("SELECT * FROM Maquina WHERE idMaquina = ?", 5);
-        SmartDbConnection.executeQuery(
-                "INSERT INTO Maquina VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                "Novo Pc", "Zion 7Q", 128, 2048, 80, 80.5, 90.0, 3
-        );
         
+//        //SQL SERVER
+        SmartDbConnection.setCurrentDbType(SmartDbConnection.DbType.SQLServer);
+//        System.out.println(SmartDbConnection.executeQueryToReturnList("SELECT * FROM Maquina"));
+        System.out.println(SmartDbConnection.executeQueryToReturnList("SELECT * FROM Maquina WHERE idMaquina = ? or idMaquina = ?", 2, 3));
+//        SmartDbConnection.executeQuery("SELECT * FROM Maquina WHERE idMaquina = ?", 5);
+//        SmartDbConnection.executeQuery(
+//                "INSERT INTO Maquina VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+//                "Novo Pc", "Zion 7Q", 128, 2048, 80, 80.5, 90.0, 3
+//        );
+        
+        //MYSQL
         SmartDbConnection.setCurrentDbType(SmartDbConnection.DbType.MySQL);
-        SmartDbConnection.executeQuery("select * from filmefavorito WHERE idFilmefavorito = ?", 10);
-        SmartDbConnection.executeQuery(
-                "update filmefavorito set "
-                + "   titulo = ? ,"
-                + "   genero = ?"
-                + "   WHERE idFilmeFavorito = ?",
-                "Minha Mãe é uma...", "BR", 10                
-        );
+        System.out.println(SmartDbConnection.executeQueryToReturnList("SELECT * FROM FilmeFavorito where idFilmeFavorito = ? or idFilmeFavorito = ?", 2, 4));
+//        SmartDbConnection.executeQuery("select * from filmefavorito WHERE idFilmefavorito = ?", 10);
+//        SmartDbConnection.executeQuery(
+//                "update filmefavorito set "
+//                + "   titulo = ? ,"
+//                + "   genero = ?"
+//                + "   WHERE idFilmeFavorito = ?",
+//                "Minha Mãe é uma coisa muito...", "BR", 10                
+//        );
 //        SmartDbConnection.executeQuery(
 //                "INSERT INTO FilmeFavorito (titulo, genero) VALUES (?, ?)",
 //                "O Sombra", "Ação"

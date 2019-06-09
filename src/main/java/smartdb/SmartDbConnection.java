@@ -1,6 +1,8 @@
 package smartdb;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,10 +10,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 /**
  *
  * @author tiago penha pedroso
- * @param <T>
  */
 public class SmartDbConnection {
 
+    //<editor-fold defaultstate="collapsed" desc="static attributes...">
     private static BasicDataSource dataSourceMySql = new BasicDataSource();
     private static BasicDataSource dataSourceSqlServer = new BasicDataSource();
     private static JdbcTemplate jdbcTemplateMySql;
@@ -24,13 +26,17 @@ public class SmartDbConnection {
     private static boolean addTimeZone;
     private static boolean lastAddTimeZone;
     private static String timeZoneUtc = "?useTimezone=true&serverTimezone=UTC";
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="enum DbType...">
     public enum DbType {
         None,
         MySQL,
         SQLServer
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="getter & setter...">
     public static void setCurrentDbType(DbType currentDbType) {
         SmartDbConnection.currentDbType = currentDbType;
     }
@@ -66,14 +72,6 @@ public class SmartDbConnection {
         currentDbType = DbType.SQLServer;
     }
 
-    public static void addTimeZoneUtcToUrlConnection() {
-        addTimeZone = true;
-    }
-
-    public static void removeTimeZoneUtcToUrlConnection() {
-        addTimeZone = false;
-    }
-
     public static JdbcTemplate getJdbcTemplate() {
         if (addTimeZone != lastAddTimeZone && currentDbType == DbType.MySQL) {
             lastAddTimeZone = addTimeZone;
@@ -95,7 +93,19 @@ public class SmartDbConnection {
             return null;
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="add & remove TimeZone methods...">
+    public static void addTimeZoneUtcToUrlConnection() {
+        addTimeZone = true;
+    }
+
+    public static void removeTimeZoneUtcToUrlConnection() {
+        addTimeZone = false;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="toStringStatic()...">
     public static String toStringStatic() {
         if (currentDbType == DbType.MySQL) {
             return "Connection::" + currentDbType
@@ -116,6 +126,120 @@ public class SmartDbConnection {
         }
 
         return "";
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="executeQuery methods...">
+    public static List<List<Object>> executeQueryToReturnList(String query) {
+        if (currentDbType == DbType.MySQL) {
+            try {
+                List<List<Object>> list = new ArrayList<>();
+                List<Map<String, Object>> mapList = jdbcTemplateMySql.queryForList(query);
+                
+                //auxiliary variables
+                Map<String, Object> map;
+                List<Object> columns;
+
+                for (int count = 0; count < mapList.size(); count++) {
+                    columns = new ArrayList<>();
+                    map = mapList.get(count);
+                    
+                    for (Map.Entry entry : map.entrySet()) {
+                        columns.add(entry.getValue());
+                    }
+
+                    list.add(columns);
+                }
+                
+                return list;
+            } catch (Exception e) {
+                System.out.println("<<MYSQL ERROR!>> " + e.getMessage());
+            }
+        }
+
+        if (currentDbType == DbType.SQLServer) {
+            try {
+                List<List<Object>> list = new ArrayList<>();
+                List<Map<String, Object>> mapList = jdbcTemplateSqlServer.queryForList(query);
+                
+                //auxiliary variables
+                Map<String, Object> map;
+                List<Object> columns;
+
+                for (int count = 0; count < mapList.size(); count++) {
+                    columns = new ArrayList<>();
+                    map = mapList.get(count);
+                    
+                    for (Map.Entry entry : map.entrySet()) {
+                        columns.add(entry.getValue());
+                    }
+
+                    list.add(columns);
+                }
+                
+                return list;
+            } catch (Exception e) {
+                System.out.println("<<SQLSERVER ERROR!>> " + e.getMessage());
+            }
+        }
+        
+        return null;
+    }
+    
+    public static List<List<Object>> executeQueryToReturnList(String query, Object... substitutionsOfSpecialStrings) {
+        if (currentDbType == DbType.MySQL) {
+            try {
+                List<List<Object>> list = new ArrayList<>();
+                List<Map<String, Object>> mapList = jdbcTemplateMySql.queryForList(query, substitutionsOfSpecialStrings);
+                
+                //auxiliary variables
+                Map<String, Object> map;
+                List<Object> columns;
+
+                for (int count = 0; count < mapList.size(); count++) {
+                    columns = new ArrayList<>();
+                    map = mapList.get(count);
+                    
+                    for (Map.Entry entry : map.entrySet()) {
+                        columns.add(entry.getValue());
+                    }
+
+                    list.add(columns);
+                }
+                
+                return list;
+            } catch (Exception e) {
+                System.out.println("<<MYSQL ERROR!>> " + e.getMessage());
+            }
+        }
+
+        if (currentDbType == DbType.SQLServer) {
+            try {
+                List<List<Object>> list = new ArrayList<>();
+                List<Map<String, Object>> mapList = jdbcTemplateSqlServer.queryForList(query, substitutionsOfSpecialStrings);
+                
+                //auxiliary variables
+                Map<String, Object> map;
+                List<Object> columns;
+
+                for (int count = 0; count < mapList.size(); count++) {
+                    columns = new ArrayList<>();
+                    map = mapList.get(count);
+                    
+                    for (Map.Entry entry : map.entrySet()) {
+                        columns.add(entry.getValue());
+                    }
+
+                    list.add(columns);
+                }
+                
+                return list;
+            } catch (Exception e) {
+                System.out.println("<<SQLSERVER ERROR!>> " + e.getMessage());
+            }
+        }
+        
+        return null;
     }
 
     public static List<?> executeQueryToReturnList(Class<?> mappedClassToResults, String query) {
@@ -145,7 +269,7 @@ public class SmartDbConnection {
 
         return null;
     }
-    
+
     public static List<?> executeQueryToReturnList(Class<?> mappedClassToResults, String query, Object... substitutionsOfSpecialStrings) {
         if (currentDbType == DbType.MySQL) {
             try {
@@ -201,7 +325,7 @@ public class SmartDbConnection {
 
         return null;
     }
-    
+
     public static Object executeQueryToReturnObject(String query, Object... substitutionsOfSpecialStrings) {
         if (currentDbType == DbType.MySQL) {
             try {
@@ -247,9 +371,9 @@ public class SmartDbConnection {
             }
         }
     }
-    
+
     public static void executeQuery(String query, Object... substitutionsOfSpecialStrings) {
-        if(query.substring(0, 6).toUpperCase().contains("SELECT")){
+        if (query.substring(0, 6).toUpperCase().contains("SELECT")) {
             if (currentDbType == DbType.MySQL) {
                 System.out.println("<<MYSQL ERROR!>> The \"SELECT\" statement is not allowed in this method! Use the statements \"INSERT\", \"UPDATE\" or \"DELETE\" instead.");
             }
@@ -258,7 +382,7 @@ public class SmartDbConnection {
             }
             return;
         }
-        
+
         if (currentDbType == DbType.MySQL) {
             try {
                 jdbcTemplateMySql.update(query, substitutionsOfSpecialStrings);
@@ -275,5 +399,6 @@ public class SmartDbConnection {
             }
         }
     }
+    //</editor-fold>
 
 }
