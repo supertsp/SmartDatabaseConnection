@@ -98,10 +98,16 @@ public class SmartDbConnection {
     //<editor-fold defaultstate="collapsed" desc="add & remove TimeZone methods...">
     public static void addTimeZoneUtcToUrlConnection() {
         addTimeZone = true;
+        
+        //update JdbcTemplate
+        getJdbcTemplate();
     }
 
     public static void removeTimeZoneUtcToUrlConnection() {
         addTimeZone = false;
+        
+        //update JdbcTemplate
+        getJdbcTemplate();
     }
     //</editor-fold>
 

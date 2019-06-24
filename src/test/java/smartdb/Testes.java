@@ -27,7 +27,6 @@ public class Testes {
             ""
         );
         SmartDbConnection.addTimeZoneUtcToUrlConnection();
-        SmartDbConnection.getJdbcTemplate();
         
         
         System.out.println("\n\n\n---------------------------------------------------------------------------------------------------");
