@@ -331,7 +331,33 @@ public class SmartDbConnection<T> {
 
         return null;
     }
+    
+    public static <T> T executeQueryToReturnObject(Class<?> classForConversionOfResults, String query){
+        if (currentDbType == DbType.MySQL) {
+            try {
+                return (T) jdbcTemplateMySql.queryForObject(
+                        query,
+                        classForConversionOfResults
+                );
+            } catch (Exception e) {
+                System.out.println("<<MYSQL ERROR!>> " + e.getMessage());
+            }
+        }
 
+        if (currentDbType == DbType.SQLServer) {
+            try {
+                return (T) jdbcTemplateSqlServer.queryForObject(
+                        query,
+                        classForConversionOfResults
+                );
+            } catch (Exception e) {
+                System.out.println("<<SQLSERVER ERROR!>> " + e.getMessage());
+            }
+        }
+
+        return null;
+    }
+    
     public static Object executeQueryToReturnObject(String query, Object... substitutionsOfSpecialStrings) {
         if (currentDbType == DbType.MySQL) {
             try {
@@ -359,7 +385,35 @@ public class SmartDbConnection<T> {
 
         return null;
     }
+    
+    public static <T> T executeQueryToReturnObject(Class<?> classForConversionOfResults, String query, Object... substitutionsOfSpecialStrings){
+        if (currentDbType == DbType.MySQL) {
+            try {
+                return (T) jdbcTemplateMySql.queryForObject(
+                        query,
+                        classForConversionOfResults,
+                        substitutionsOfSpecialStrings
+                );
+            } catch (Exception e) {
+                System.out.println("<<MYSQL ERROR!>> " + e.getMessage());
+            }
+        }
 
+        if (currentDbType == DbType.SQLServer) {
+            try {
+                return (T) jdbcTemplateSqlServer.queryForObject(
+                        query,
+                        classForConversionOfResults,
+                        substitutionsOfSpecialStrings
+                );
+            } catch (Exception e) {
+                System.out.println("<<SQLSERVER ERROR!>> " + e.getMessage());
+            }
+        }
+
+        return null;
+    }
+    
     public static void executeQuery(String query) {
         if (currentDbType == DbType.MySQL) {
             try {

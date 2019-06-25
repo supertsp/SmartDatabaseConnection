@@ -48,6 +48,13 @@ public class Testes {
         
         System.out.println(listaLeituras);
         
+        int number = SmartDbConnection.executeQueryToReturnObject(Integer.class, 
+                "SELECT ISNULL(MAX(idMaquina) + ?, ?) FROM Maquina",
+                1, 0
+        );
+        
+        System.out.println("last id: " + number);
+        
         //MYSQL
         SmartDbConnection.setCurrentDbType(SmartDbConnection.DbType.MySQL);
 //        System.out.println(SmartDbConnection.executeQueryToReturnList("SELECT * FROM FilmeFavorito where idFilmeFavorito = ? or idFilmeFavorito = ?", 2, 4));
