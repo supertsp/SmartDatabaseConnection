@@ -35,16 +35,22 @@ public class Testes {
 //        //SQL SERVER
         SmartDbConnection.setCurrentDbType(SmartDbConnection.DbType.SQLServer);
 //        System.out.println(SmartDbConnection.executeQueryToReturnList("SELECT * FROM Maquina"));
-        System.out.println(SmartDbConnection.executeQueryToReturnList("SELECT * FROM Maquina WHERE idMaquina = ? or idMaquina = ?", 2, 3));
+//        System.out.println(SmartDbConnection.executeQueryToReturnList("SELECT * FROM Maquina WHERE idMaquina = ? or idMaquina = ?", 2, 3));
 //        SmartDbConnection.executeQuery("SELECT * FROM Maquina WHERE idMaquina = ?", 5);
 //        SmartDbConnection.executeQuery(
 //                "INSERT INTO Maquina VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
 //                "Novo Pc", "Zion 7Q", 128, 2048, 80, 80.5, 90.0, 3
 //        );
         
+        List<Maquina> listaLeituras = SmartDbConnection.executeQueryToReturnList(Maquina.class,
+                    "SELECT * FROM Maquina"
+        );
+        
+        System.out.println(listaLeituras);
+        
         //MYSQL
         SmartDbConnection.setCurrentDbType(SmartDbConnection.DbType.MySQL);
-        System.out.println(SmartDbConnection.executeQueryToReturnList("SELECT * FROM FilmeFavorito where idFilmeFavorito = ? or idFilmeFavorito = ?", 2, 4));
+//        System.out.println(SmartDbConnection.executeQueryToReturnList("SELECT * FROM FilmeFavorito where idFilmeFavorito = ? or idFilmeFavorito = ?", 2, 4));
 //        SmartDbConnection.executeQuery("select * from filmefavorito WHERE idFilmefavorito = ?", 10);
 //        SmartDbConnection.executeQuery(
 //                "update filmefavorito set "
@@ -57,7 +63,7 @@ public class Testes {
 //                "INSERT INTO FilmeFavorito (titulo, genero) VALUES (?, ?)",
 //                "O Sombra", "Ação"
 //        );
-        SmartDbConnection.executeQuery("delete from filmefavorito where idFilmeFavorito = ?", 13);
+//        SmartDbConnection.executeQuery("delete from filmefavorito where idFilmeFavorito = ?", 13);
         
         
         

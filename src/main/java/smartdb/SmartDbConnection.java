@@ -11,8 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
  *
  * @author tiago penha pedroso
  */
-public class SmartDbConnection {
-
+public class SmartDbConnection<T> {
+        
     //<editor-fold defaultstate="collapsed" desc="static attributes...">
     private static BasicDataSource dataSourceMySql = new BasicDataSource();
     private static BasicDataSource dataSourceSqlServer = new BasicDataSource();
@@ -247,11 +247,11 @@ public class SmartDbConnection {
         
         return null;
     }
-
-    public static List<?> executeQueryToReturnList(Class<?> mappedClassToResults, String query) {
+        
+    public static <T> List<T> executeQueryToReturnList(Class<?> mappedClassToResults, String query) {
         if (currentDbType == DbType.MySQL) {
             try {
-                List<?> list = jdbcTemplateMySql.query(
+                List<T> list = jdbcTemplateMySql.query(
                         query,
                         new BeanPropertyRowMapper(mappedClassToResults)
                 );
@@ -263,7 +263,7 @@ public class SmartDbConnection {
 
         if (currentDbType == DbType.SQLServer) {
             try {
-                List<?> list = jdbcTemplateSqlServer.query(
+                List<T> list = jdbcTemplateSqlServer.query(
                         query,
                         new BeanPropertyRowMapper(mappedClassToResults)
                 );
@@ -276,10 +276,10 @@ public class SmartDbConnection {
         return null;
     }
 
-    public static List<?> executeQueryToReturnList(Class<?> mappedClassToResults, String query, Object... substitutionsOfSpecialStrings) {
+    public static <T> List<T> executeQueryToReturnList(Class<?> mappedClassToResults, String query, Object... substitutionsOfSpecialStrings) {
         if (currentDbType == DbType.MySQL) {
             try {
-                List<?> list = jdbcTemplateMySql.query(
+                List<T> list = jdbcTemplateMySql.query(
                         query,
                         new BeanPropertyRowMapper(mappedClassToResults),
                         substitutionsOfSpecialStrings
@@ -292,7 +292,7 @@ public class SmartDbConnection {
 
         if (currentDbType == DbType.SQLServer) {
             try {
-                List<?> list = jdbcTemplateSqlServer.query(
+                List<T> list = jdbcTemplateSqlServer.query(
                         query,
                         new BeanPropertyRowMapper(mappedClassToResults),
                         substitutionsOfSpecialStrings
