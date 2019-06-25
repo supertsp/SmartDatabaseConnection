@@ -65,6 +65,17 @@ public class Testes {
         
         SmartDbConnection.executeQuery("DELETE FROM Maquina WHERE idMaquina = " + 26);
         
+        Maquina registro1 = SmartDbConnection.executeQueryToReturnMappedObject(Maquina.class,
+                "SELECT * FROM Maquina where idMaquina = ?",
+                2
+        );
+        
+        Maquina registro2 = SmartDbConnection.executeQueryToReturnMappedObject(Maquina.class,
+                "SELECT * FROM Maquina where idMaquina = " + 3
+        );
+        
+        System.out.println("Registro encontrado: " + registro1 + "\n" + registro2);
+        
         //MYSQL
         SmartDbConnection.setCurrentDbType(SmartDbConnection.DbType.MySQL);
 //        System.out.println(SmartDbConnection.executeQueryToReturnList("SELECT * FROM FilmeFavorito where idFilmeFavorito = ? or idFilmeFavorito = ?", 2, 4));

@@ -414,6 +414,60 @@ public class SmartDbConnection<T> {
         return null;
     }
     
+    public static <T> T executeQueryToReturnMappedObject(Class<?> mappedClassToResults, String query){
+        if (currentDbType == DbType.MySQL) {
+            try {
+                return (T) jdbcTemplateMySql.queryForObject(
+                        query,
+                        new BeanPropertyRowMapper(mappedClassToResults)
+                );
+            } catch (Exception e) {
+                System.out.println("<<MYSQL ERROR!>> " + e.getMessage());
+            }
+        }
+
+        if (currentDbType == DbType.SQLServer) {
+            try {
+                return (T) jdbcTemplateSqlServer.queryForObject(
+                        query,
+                        new BeanPropertyRowMapper(mappedClassToResults)
+                );
+            } catch (Exception e) {
+                System.out.println("<<SQLSERVER ERROR!>> " + e.getMessage());
+            }
+        }
+
+        return null;
+    }
+    
+    public static <T> T executeQueryToReturnMappedObject(Class<?> mappedClassToResults, String query, Object... substitutionsOfSpecialStrings){
+        if (currentDbType == DbType.MySQL) {
+            try {
+                return (T) jdbcTemplateMySql.queryForObject(
+                        query,
+                        new BeanPropertyRowMapper(mappedClassToResults),
+                        substitutionsOfSpecialStrings
+                );
+            } catch (Exception e) {
+                System.out.println("<<MYSQL ERROR!>> " + e.getMessage());
+            }
+        }
+
+        if (currentDbType == DbType.SQLServer) {
+            try {
+                return (T) jdbcTemplateSqlServer.queryForObject(
+                        query,
+                        new BeanPropertyRowMapper(mappedClassToResults),
+                        substitutionsOfSpecialStrings
+                );
+            } catch (Exception e) {
+                System.out.println("<<SQLSERVER ERROR!>> " + e.getMessage());
+            }
+        }
+
+        return null;
+    }
+    
     public static void executeQuery(String query) {
         if (currentDbType == DbType.MySQL) {
             try {
