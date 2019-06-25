@@ -41,19 +41,29 @@ public class Testes {
 //                "INSERT INTO Maquina VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
 //                "Novo Pc", "Zion 7Q", 128, 2048, 80, 80.5, 90.0, 3
 //        );
-        
-        List<Maquina> listaLeituras = SmartDbConnection.executeQueryToReturnList(Maquina.class,
-                    "SELECT * FROM Maquina"
-        );
-        
-        System.out.println(listaLeituras);
-        
+                
         int number = SmartDbConnection.executeQueryToReturnObject(Integer.class, 
                 "SELECT ISNULL(MAX(idMaquina) + ?, ?) FROM Maquina",
                 1, 0
         );
         
         System.out.println("last id: " + number);
+        
+//        SmartDbConnection.executeQuery(
+//                "SET IDENTITY_INSERT Maquina ON \n" +
+//                "INSERT INTO Maquina (idMaquina, modelo, processador, memoriaRam, discoRigido, delimitCpu, delimitRam, delimitHd) " +
+//                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)\n" +
+//                "SET IDENTITY_INSERT Maquina OFF",
+//                5, "Novo Pc", "Zion 7Q", 128, 2048, 80, 80.5, 90.0
+//        );
+                
+        List<Maquina> listaLeituras = SmartDbConnection.executeQueryToReturnList(Maquina.class,
+                    "SELECT * FROM Maquina"
+        );
+        
+        System.out.println(listaLeituras);
+        
+        SmartDbConnection.executeQuery("DELETE FROM Maquina WHERE idMaquina = " + 26);
         
         //MYSQL
         SmartDbConnection.setCurrentDbType(SmartDbConnection.DbType.MySQL);
