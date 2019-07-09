@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.com.tiagopedroso</groupId>
     <artifactId>SmartDatabaseConnection</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <packaging>jar</packaging>
     
     <properties>
@@ -60,6 +60,28 @@
                     </execution>
                 </executions>
             </plugin>
+            
+             <!-- CRIA O JAR COM OS ARQUIVOS .JAVA INCLUSOS  --> 
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>${project.artifactId}-include-sources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <copy todir="${project.build.outputDirectory}">
+                                    <fileset dir="${project.build.SourceDirectory}"/>
+                                </copy>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
         </plugins>
     </build>
     <!-- // </editor-fold> -->
